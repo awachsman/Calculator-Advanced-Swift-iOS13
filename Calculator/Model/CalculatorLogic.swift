@@ -15,6 +15,8 @@ struct CalculatorLogic {
      */
     private var number: Double?
     
+    private var intermediateCalculation: (n1: Double, calcMethod: String)?
+        
     // Create a function that allows other classes to set the value of the number property
     mutating func setNumber(_ number: Double) {
         self.number = number  // set the value of the private var named number to the value of the param passed in (also called number)
@@ -28,30 +30,48 @@ struct CalculatorLogic {
     
     // In function below, we return Double? rather than Double;  this is because at bottom of if statements, we return a nil; since Double does not allow nil, we need to declare it as Double?
     
-    func calculate(symbol: String?) -> Double? {
+    mutating func calculate(symbol: String) -> Double? {
         // Process calculation buttons (AC, +/-, %)
         /* This code has been moved from ViewController.swift but sender, displayValue and displayLabel don't exist in this file. So, sender was replaced by symbol, dispValue was replaced by number, return statements send values to populate displayLabel.  Subsequently, number was changed to an optional to allow a nil value.  That required the if let n = number statement; number was replaced by n in return statements */
         
         if let n = number {
-            if symbol == "+/-" {
+            switch symbol {
+            case "+/-":
                 return n * -1
-                //return number * -1
-                //displayValue = displayValue * -1
-                
-            } else if symbol == "AC" {
+            case "AC":
                 return 0
-                //displayLabel.text = "0"
-            } else if symbol == "%" {
+            case "%":
                 return n * 0.01
-                //return number * 0.01
-                //displayValue = displayValue * 0.01
-            } else if symbol == "+" {
-                
-            } else if symbol == "=" {
-                
+            case "=":
+                return performTwoNumberCalculation(n2: n)
+            default:
+                intermediateCalculation = (n1: n, calcMethod: symbol)
             }
+            
         }
         // Since the value of symbol may be other than one handled by the if statement, we need to return something to cover that so we return a nil here
+        return nil
+    }
+    
+    private func performTwoNumberCalculation(n2: Double) -> Double? {
+        // statement below requires that both conditions be satisfied , i.e. a non-nil n1 and a non-nil operation
+        if let n1 = intermediateCalculation?.n1,
+            let operation = intermediateCalculation?.calcMethod {
+            
+            switch operation {
+            case "+":
+                return n1 + n2
+            case "-":
+                return n1 - n2
+            case "×":
+                return n1 * n2
+            case "÷":
+                return n1 / n2
+            default:
+                fatalError("The operation passed in does not match any of the programmed cases.")
+            }
+            
+        }
         return nil
     }
 }

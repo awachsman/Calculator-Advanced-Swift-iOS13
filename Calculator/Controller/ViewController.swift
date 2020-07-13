@@ -73,10 +73,9 @@ class ViewController: UIViewController {
             
             // Call calculate (declared in CalculatorLogic) and assign the return value to result
             
-            guard let result = calculator.calculate(symbol: calcMethod) else {
-                fatalError("CalculatorLogic returned a nil")
+            if let result = calculator.calculate(symbol: calcMethod ) {
+                displayValue = result
             }
-            displayValue = result
             
         }
     
