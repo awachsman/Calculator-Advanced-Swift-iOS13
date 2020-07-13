@@ -47,16 +47,27 @@ class ViewController: UIViewController {
        
         // Process calculation buttons (AC, +/-, %)
         if let calcMethod = sender.currentTitle {
-            if calcMethod == "+/-" {
-                //OLD - displayLabel.text = String(displayValue * -1);  replaced by computed property displayValue
-                displayValue = displayValue * -1
+            /* Code below has been moved to CalculatorLogic.swift
+             if calcMethod == "+/-" {
+                 //OLD - displayLabel.text = String(displayValue * -1);  replaced by computed property displayValue
+                 displayValue = displayValue * -1
 
-            } else if calcMethod == "AC" {
-                displayLabel.text = "0"
-            } else if calcMethod == "%" {
-                //OLD - displayLabel.text = String(displayValue * 0.01);  replaced by computed property displayValue
-                displayValue = displayValue * 0.01
+             } else if calcMethod == "AC" {
+                 displayLabel.text = "0"
+             } else if calcMethod == "%" {
+                 //OLD - displayLabel.text = String(displayValue * 0.01);  replaced by computed property displayValue
+                 displayValue = displayValue * 0.01
+             }*/
+            // Create a new instance of CalculatorLogic using the constant named clculator
+            let calculator = CalculatorLogic(number: displayValue)
+            
+            // Call calculate (declared in CalculatorLogic) and assign the return value to result
+            
+            guard let result = calculator.calculate(symbol: calcMethod) else {
+                fatalError("CalculatorLogic returned a nil")
             }
+            displayValue = result
+            
         }
     
     }
