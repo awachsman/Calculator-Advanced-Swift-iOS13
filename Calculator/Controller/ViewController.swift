@@ -28,12 +28,18 @@ class ViewController: UIViewController {
         }
     }
     
+    // Create new instance of CalculatorLogic using a constant named calculator. This line used to be in IBAction but is now global and therefore private. Also, it cannot call displayValue since, depending on timing, displayValue may or may not be nil.  Thus, displayValue param was removed. Instead of passing it in to initialize clculator, number (in CalculatorLogic.swift) is now an optional - see CalculatorLogic.swift.
+    
+    private var calculator = CalculatorLogic()
+    
     @IBAction func calcButtonPressed(_ sender: UIButton) {
         
         //What should happen when a non-number button is pressed
         // Reset isFinishedTypingNumber back to true
         
         isFinishedTypingNumber = true
+        
+        calculator.setNumber(displayValue)
         
         // Expand operational functionality (AC, +/-. %)
         
@@ -58,8 +64,12 @@ class ViewController: UIViewController {
                  //OLD - displayLabel.text = String(displayValue * 0.01);  replaced by computed property displayValue
                  displayValue = displayValue * 0.01
              }*/
-            // Create a new instance of CalculatorLogic using the constant named clculator
-            let calculator = CalculatorLogic(number: displayValue)
+            
+            /* Originally, we created a new instance of CalculatorLogic using the constant named clculator and placed it here in IBAction.  The constant has been made private for security purposes. It has now been moved outside IPAction (see above) and has been made private for security purposes.
+             
+             let calculator = CalculatorLogic(number: displayValue)
+             
+             */
             
             // Call calculate (declared in CalculatorLogic) and assign the return value to result
             
